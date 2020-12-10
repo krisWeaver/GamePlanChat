@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Sign Up</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" color="light">
+
+  <div id="container">
+    Fill out the form below to get started! 
+    <ion-grid style="width: 80%">
+      <ion-row>
+        <ion-input type="text" class="input" placeholder="Your Name" [(ngModel)]="name"></ion-input>
+      </ion-row>
+      <ion-row>
+        <ion-input type="email" class="input" placeholder="Your Email" [(ngModel)]="email"></ion-input>
+      </ion-row>
+      <ion-row>
+        <ion-input type="password" class="input" placeholder="Password" [(ngModel)]="password"></ion-input>
+      </ion-row>
+      <!--
+      <ion-row>
+        <ion-input type="text" class="input" placeholder="Team Name" [(ngModel)]="name"></ion-input>
+      </ion-row>
+      -->
+    </ion-grid>
+
+    <ion-button block clear color="dark" (click)="signUp()">
+      Sign Up
+    </ion-button>
+  </div>
+
+</ion-content>

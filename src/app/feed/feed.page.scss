@@ -1,0 +1,23 @@
+.row-style {
+    border: solid #3dc2ff 2px; 
+    border-radius: 10px;
+    margin-top: 15px;
+}
+
+.say-something {
+    margin: 16px;
+}
+
+.say-something-input {
+    padding-left: 8px !important; 
+}
+
+.say-something-button {
+    padding-right: 6px !important; 
+}
+
+.class-header :host {
+    padding: 10px 20px 6px !important;
+    font-size: 20px; 
+}
+

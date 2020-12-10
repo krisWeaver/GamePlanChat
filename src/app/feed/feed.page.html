@@ -1,0 +1,60 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-title>Your Feed</ion-title>
+    <ion-buttons slot="end">
+      <ion-button icon-only clear (click)="logout()">
+        <ion-icon name="log-out"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content margin [fullscreen]="true">
+
+  <ion-row class="row-style say-something">
+  
+    <ion-input class="say-something-input" type="text" placeholder="Say something..." [(ngModel)]="text"></ion-input>
+
+    <ion-button class="say-something-button" icon-only color="secondary" (click)="post()">
+      <ion-icon name="send"></ion-icon>
+    </ion-button>
+
+  </ion-row>
+
+    
+
+  <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  
+
+  <ion-card *ngFor="let post of posts">
+  
+    <ion-card-header class="card-header" style="padding: 10px 20px 6px !important; font-size: 20px;" color="secondary">{{ post.data().owner_name }} says</ion-card-header>
+
+    <ion-item>{{ post.data().text }}</ion-item>
+
+    <ion-row class="bottom-bar">
+
+      <ion-col>
+        <ion-button clear small color="secondary" click="comment(post)" style="height: 1.8em;">
+          <ion-icon name="chatbubble"></ion-icon> 6
+        </ion-button>
+      </ion-col>
+      <ion-col class="ion-text-right">
+        {{ ago(post.data().created.toDate()) }} ago
+      </ion-col>
+
+    </ion-row>
+
+  </ion-card>
+
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMorePosts($event)">
+    <ion-infinite-scroll-content>
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+
+
+</ion-content>
