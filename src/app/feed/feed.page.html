@@ -38,14 +38,25 @@
     <ion-row class="bottom-bar">
 
       <ion-col>
-        <ion-button clear small color="secondary" click="comment(post)" style="height: 1.8em;">
-          <ion-icon name="chatbubble"></ion-icon> 6
+        <ion-button clear small color="secondary" (click)="comment(post)" style="height: 1.8em; font-size: 12px;">
+          <ion-icon name="chatbubble"></ion-icon> {{ post.data().commentsCount || 0 }} Comments
         </ion-button>
       </ion-col>
+
+      <ion-col>
+        <ion-button clear small color="secondary" (click)="viewComments(post)" style="height: 1.8em; font-size: 12px;">
+          <ion-icon name="eye"></ion-icon> View Comments
+        </ion-button>
+      </ion-col>
+
+    </ion-row>
+
+    <ion-row class="bottom-bar">
+
       <ion-col class="ion-text-right">
         {{ ago(post.data().created.toDate()) }} ago
       </ion-col>
-
+    
     </ion-row>
 
   </ion-card>

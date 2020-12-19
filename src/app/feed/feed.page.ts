@@ -1,7 +1,11 @@
+import { Comment } from '@angular/compiler';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { NavController, NavParams, LoadingController, ToastController, ActionSheetController, AlertController, IonInfiniteScroll } from '@ionic/angular';
+import { NavController, NavParams, LoadingController, ToastController, 
+  ActionSheetController, AlertController, IonInfiniteScroll, ModalController } from '@ionic/angular';
 import firebase from 'firebase';
 import moment from 'moment'; 
+
+import { CommentsPage } from '../comments/comments.page';
 
 @Component({
   selector: 'app-feed',
@@ -9,6 +13,7 @@ import moment from 'moment';
   styleUrls: ['./feed.page.scss'],
   providers: [NavParams]
 })
+
 export class FeedPage implements OnInit {
 
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
@@ -21,7 +26,7 @@ export class FeedPage implements OnInit {
 
   constructor (public navCtrl: NavController, public navParams: NavParams, 
     public loadingCtrl: LoadingController, private toastCtrl: ToastController, 
-    private actionSheetCtrl: ActionSheetController, private alertCtrl: AlertController) {
+    private actionSheetCtrl: ActionSheetController, private alertCtrl: AlertController, public modalCtrl: ModalController) {
 
     this.getPosts();
 
@@ -129,7 +134,7 @@ export class FeedPage implements OnInit {
     setTimeout(() => {
       console.group('Async operation has ended'); 
       event.target.complete();
-    }, 2000);
+    }, 4000);
     
   }
 
@@ -145,57 +150,6 @@ export class FeedPage implements OnInit {
     })
   }
 
-  /*
-  comment(post){
-    this.actionSheetCtrl.create({
-      buttons: [
-        {
-          text: "View All Comments",
-          handler: ()=> {}
-        },
-        {
-          text: "Leave A Comment",
-          handler: ()=> {
-            this.alertCtrl.create({
-              header: "New Comment",
-              message: "Type your comment",
-              inputs: [
-                {
-                  name:"comment",
-                  type:"text"
-                }
-              ],
-              buttons: [
-                {
-                  text: "Cancle"
-                },
-                {
-                  text: "Post",
-                  handler: (data)=> {
-                    if (data.comment){
-                      firebase.firestore().collection("comments").add({
-                        text: data.comment,
-                        post: post.id,
-                        owner: firebase.auth().currentUser.uid,
-                        owner_name: firebase.auth().currentUser.displayName,
-                        created: firebase.firestore.FieldValue.serverTimestamp()
-                      }).then((doc)=>{
-                        this.successfulComment(); 
-                      }).catch((err)=>{
-                        this.failedComment(); 
-                      })
-                    }
-                  }
-                }
-              ]
-            })
-          }
-        }
-      ]
-    });
-  }
-
-*/
 
   // Async Functions 
 
@@ -226,6 +180,60 @@ export class FeedPage implements OnInit {
 
     await alert.present(); 
   }
+
+
+
+  async comment(post){
+
+    const alert = await this.alertCtrl.create({
+      header: "New Comment",
+      message: "Type your comment",
+      inputs: [
+        {
+          name:"comment",
+          type:"text"
+        }
+      ],
+      buttons: [
+        {
+          text: "Cancel"
+        },
+        {
+          text: "Post",
+          handler: (data) => {
+            if (data.comment){
+              firebase.firestore().collection("comments").add({
+                text: data.comment,
+                post: post.id,
+                owner: firebase.auth().currentUser.uid,
+                owner_name: firebase.auth().currentUser.displayName,
+                created: firebase.firestore.FieldValue.serverTimestamp()
+              }).then((doc)=>{
+                this.successfulComment(); 
+              }).catch((err)=>{
+                this.failedComment(); 
+              })
+            }
+          }
+        }
+      ]
+    });
+    
+    await alert.present(); 
+
+  }
+
+  async viewComments(post) {
+
+    let alert = await this.modalCtrl.create({
+      component: CommentsPage,
+      componentProps: {"post": post}
+    }); 
+
+    await alert.present();
+  }
+
+  
 
   async successfulComment(){
     const alert = await this.toastCtrl.create({

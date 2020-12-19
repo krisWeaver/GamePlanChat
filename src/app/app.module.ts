@@ -11,8 +11,6 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { Camera } from '@ionic-native/camera/ngx';
 
-
-//import { Firebase } from '@ionic-native/firebase/ngx'; 
 import firebase from 'firebase';
 
 var firebaseConfig = {
